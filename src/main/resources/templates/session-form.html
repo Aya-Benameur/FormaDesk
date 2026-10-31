@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nouvelle session - FormaDesk</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+
+        <a th:href="@{/sessions}" class="brand">
+            🎓 FormaDesk
+        </a>
+
+        <nav class="nav-links">
+            <a th:href="@{/sessions}" class="nav-link">Sessions</a>
+            <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
+            <a th:href="@{/apprenants}" class="nav-link">Apprenants</a>
+            <a th:href="@{/inscriptions}" class="nav-link">Inscriptions</a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        Accueil / Sessions / Nouvelle session
+    </div>
+
+    <section class="page-heading">
+        <h1 class="page-title">Ajouter une session</h1>
+
+        <p class="page-description">
+            Complétez les informations pour créer une nouvelle formation.
+        </p>
+    </section>
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <h2 class="panel-title">Informations de la session</h2>
+
+            <p class="panel-subtitle">
+                Les champs marqués * sont obligatoires.
+            </p>
+        </div>
+
+        <form th:action="@{/sessions/enregistrer}" method="post">
+
+            <div class="search-grid">
+
+                <div class="field">
+                    <label>Description *</label>
+
+                    <input type="text"
+                           name="description"
+                           class="form-control"
+                           placeholder="Exemple : Formation Java"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label>Date de début *</label>
+
+                    <input type="date"
+                           name="dateDebut"
+                           class="form-control"
+                           th:value="${dateDuJour}"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label>Date de fin *</label>
+
+                    <input type="date"
+                           name="dateFin"
+                           class="form-control"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label>Formateur *</label>
+
+                    <select name="formateurId"
+                            class="form-control"
+                            required>
+
+                        <option value="">
+                            Choisir un formateur
+                        </option>
+
+                        <option th:each="formateur : ${formateurs}"
+                                th:value="${formateur.id}"
+                                th:text="${formateur.prenom + ' ' + formateur.nom}">
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+
+                <button type="submit" class="btn btn-primary">
+                    Enregistrer
+                </button>
+
+                <a th:href="@{/sessions}"
+                   class="btn btn-secondary">
+                    Annuler
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    FormaDesk - Gestion des formations
+</footer>
+
+</body>
+</html>

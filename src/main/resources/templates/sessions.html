@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sessions de formation | FormaDesk</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+
+        <a class="brand" th:href="@{/sessions}">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <div class="brand-name">FormaDesk</div>
+                <div class="brand-subtitle">Gestion de formation</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a class="nav-link" th:href="@{/}">⌂ Accueil</a>
+            <a class="nav-link active" th:href="@{/sessions}">
+                ▦ Sessions
+            </a>
+            <a class="nav-link" th:href="@{/formateurs}">
+                ♙ Formateurs
+            </a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        Espace de travail / Sessions de formation
+    </div>
+
+    <section class="page-heading">
+        <div>
+            <h1 class="page-title">Sessions de formation</h1>
+            <p class="page-description">
+                Consulte, recherche et retrouve facilement les sessions.
+            </p>
+        </div>
+
+        <div class="form-actions">
+            <a class="btn btn-primary" th:href="@{/sessions/nouveau}">
+                + Ajouter une session
+            </a>
+        </div>
+
+        <div class="heading-mark">📚</div>
+    </section>
+
+    <section class="stats-grid">
+
+        <article class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div>
+                <div class="stat-label">Sessions affichées</div>
+                <div class="stat-value"
+                     th:text="${#lists.size(sessions)}">0</div>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">🔎</div>
+            <div>
+                <div class="stat-label">Recherche</div>
+                <div class="stat-value">Facile</div>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Trouver une session</h2>
+                <p class="panel-subtitle">
+                    Choisis un critère pour filtrer les résultats.
+                </p>
+            </div>
+            <div class="heading-mark">🔍</div>
+        </div>
+
+        <div class="search-grid">
+
+            <form th:action="@{/sessions/rechercher/date}"
+                  method="get"
+                  class="field">
+
+                <label for="date">Date de début</label>
+
+                <input class="form-control"
+                       type="date"
+                       id="date"
+                       name="date"
+                       th:value="${dateRecherchee}"
+                       required>
+
+                <button type="submit" class="btn btn-primary">
+                    🔎 Rechercher par date
+                </button>
+            </form>
+
+            <form th:action="@{/sessions/rechercher/description}"
+                  method="get"
+                  class="field">
+
+                <label for="description">Description de la session</label>
+
+                <input class="form-control"
+                       type="text"
+                       id="description"
+                       name="description"
+                       th:value="${descriptionRecherchee}"
+                       placeholder="Exemple : Java"
+                       required>
+
+                <button type="submit" class="btn btn-primary">
+                    🔎 Rechercher par description
+                </button>
+            </form>
+
+            <form th:action="@{/sessions/par-apprenant}"
+                  method="get"
+                  class="field">
+
+                <label for="apprenantId">Identifiant de l'apprenant</label>
+
+                <input class="form-control"
+                       type="number"
+                       id="apprenantId"
+                       name="apprenantId"
+                       min="1"
+                       th:value="${apprenantId}"
+                       placeholder="Exemple : 1"
+                       required>
+
+                <button type="submit" class="btn btn-primary">
+                    👤 Voir ses sessions
+                </button>
+            </form>
+
+        </div>
+
+        <div class="form-actions">
+            <a class="btn btn-secondary" th:href="@{/sessions}">
+                ↻ Afficher toutes les sessions
+            </a>
+        </div>
+
+    </section>
+
+    <section class="panel table-panel">
+
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Liste des sessions</h2>
+                <p class="panel-subtitle">
+                    Résultats correspondant à ta recherche.
+                </p>
+            </div>
+
+            <span class="status-badge"
+                  th:text="${#lists.size(sessions)} + ' résultat(s)'">
+                0 résultat(s)
+            </span>
+        </div>
+
+        <div th:if="${sessions == null or #lists.isEmpty(sessions)}"
+             class="empty-state">
+
+            <div class="empty-icon">📭</div>
+
+            <div class="empty-title">
+                Aucune session trouvée
+            </div>
+
+            <p class="empty-description">
+                Aucune session ne correspond à cette recherche,
+                ou aucune session n'a encore été enregistrée.
+            </p>
+
+            <a class="btn btn-primary" th:href="@{/sessions}">
+                ↻ Réinitialiser la recherche
+            </a>
+        </div>
+
+        <div th:if="${sessions != null and !#lists.isEmpty(sessions)}"
+             class="table-responsive">
+
+            <table class="sessions-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Formateur</th>
+                    <th>Apprenants</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="formation : ${sessions}">
+
+                    <td>
+                        <span class="id-badge"
+                              th:text="'#' + ${formation.id}">#1</span>
+                    </td>
+
+                    <td>
+                        <strong th:text="${formation.description}">
+                            Formation Java
+                        </strong>
+                    </td>
+
+                    <td th:text="${formation.dateDebut}">2026-11-02</td>
+
+                    <td th:text="${formation.dateFin}">2026-11-05</td>
+
+                    <td th:text="${formation.formateur != null ? formation.formateur.nom : 'Non défini'}">
+                        Formateur
+                    </td>
+
+                    <td>
+                        <a class="action-link"
+                           th:href="@{/sessions/nombre-apprenants(sessionId=${formation.id})}">
+                            Voir le nombre →
+                        </a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <span>© 2026 FormaDesk — Gestion de formation</span>
+    <span>Application Spring MVC &amp; Thymeleaf</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nombre d'apprenants</title>
+</head>
+<body>
+
+    <h1>Nombre d'apprenants par session</h1>
+
+    <p>
+        Session numéro :
+        <strong th:text="${sessionId}"></strong>
+    </p>
+
+    <p>
+        Nombre d'apprenants inscrits :
+        <strong th:text="${nombreApprenants}"></strong>
+    </p>
+
+    <a th:href="@{/sessions}">Retour aux sessions</a>
+
+</body>
+</html>

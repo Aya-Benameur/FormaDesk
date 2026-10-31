@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formateurs | FormaDesk</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+        <a class="brand" th:href="@{/formateurs}">
+            <span class="heading-mark">F</span>
+            FormaDesk
+        </a>
+        <nav class="nav-links">
+            <a class="nav-link" th:href="@{/}">Tableau de bord</a>
+            <a class="nav-link" th:href="@{/sessions}">Sessions</a>
+            <a class="nav-link" th:href="@{/formateurs}">Formateurs</a>
+            <a class="nav-link" th:href="@{/apprenants}">Apprenants</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="page-heading">
+        <div>
+            <h1 class="page-title">Gestion des formateurs</h1>
+            <p class="page-description">
+                Ajoutez, consultez, modifiez et recherchez vos formateurs.
+            </p>
+        </div>
+    </section>
+
+    <!-- Messages de résultat -->
+    <section th:if="${message}" class="panel">
+        <p th:text="${message}"></p>
+    </section>
+
+    <section th:if="${erreur}" class="panel">
+        <p th:text="${erreur}"></p>
+    </section>
+
+    <!-- Action principale -->
+    <section class="form-actions">
+        <a class="btn btn-primary" th:href="@{/formateurs/nouveau}">
+            + Ajouter un formateur
+        </a>
+    </section>
+
+    <!-- Statistiques -->
+    <section class="stats-grid">
+        <article class="stat-card">
+            <div class="stat-icon">Formateurs</div>
+            <p class="stat-label">Résultats affichés</p>
+            <p class="stat-value" th:text="${formateurs.size()}">0</p>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">Recherche</div>
+            <p class="stat-label">Critères disponibles</p>
+            <p class="stat-value">2</p>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">Formation</div>
+            <p class="stat-label">Espace</p>
+            <p class="stat-value">Formateurs</p>
+        </article>
+    </section>
+
+    <!-- Recherches -->
+    <section class="panel">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Rechercher un formateur</h2>
+                <p class="panel-subtitle">
+                    Recherche par fonction ou par formation associée.
+                </p>
+            </div>
+        </div>
+
+        <div class="search-grid">
+            <form th:action="@{/formateurs/rechercher}" method="get">
+                <div class="field">
+                    <label for="fonction">Fonction</label>
+                    <input class="form-control"
+                           id="fonction"
+                           type="text"
+                           name="fonction"
+                           placeholder="Ex. : Développeur"
+                           th:value="${fonctionRecherchee}">
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">
+                        Rechercher
+                    </button>
+                    <a class="btn btn-secondary"
+                       th:href="@{/formateurs}">
+                        Réinitialiser
+                    </a>
+                </div>
+            </form>
+
+            <form th:action="@{/formateurs/par-formation}" method="get">
+                <div class="field">
+                    <label for="formation">Formation</label>
+                    <input class="form-control"
+                           id="formation"
+                           type="text"
+                           name="formation"
+                           placeholder="Ex. : Java"
+                           th:value="${formationRecherchee}">
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">
+                        Rechercher
+                    </button>
+                    <a class="btn btn-secondary"
+                       th:href="@{/formateurs}">
+                        Réinitialiser
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Liste -->
+    <section class="table-panel">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Liste des formateurs</h2>
+                <p class="panel-subtitle">
+                    Gérez les informations enregistrées.
+                </p>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="sessions-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom complet</th>
+                    <th>CIN</th>
+                    <th>Email</th>
+                    <th>Fonction</th>
+                    <th>Grade</th>
+                    <th>Première formation</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="formateur : ${formateurs}">
+                    <td>
+                        <span class="id-badge"
+                              th:text="${formateur.id}">1</span>
+                    </td>
+
+                    <td>
+                        <strong>
+                            <span th:text="${formateur.prenom}">Prénom</span>
+                            <span th:text="${formateur.nom}">Nom</span>
+                        </strong>
+                    </td>
+
+                    <td th:text="${formateur.cin}">CIN</td>
+                    <td th:text="${formateur.email}">Email</td>
+                    <td th:text="${formateur.fonction}">Fonction</td>
+
+                    <td>
+                        <span class="status-badge"
+                              th:text="${formateur.grade}">Grade</span>
+                    </td>
+
+                    <td th:text="${formateur.datePremiereFormation}">
+                        Date
+                    </td>
+
+                    <td>
+                        <div class="form-actions">
+                            <a class="btn btn-secondary"
+                               th:href="@{/formateurs/modifier/{id}(id=${formateur.id})}">
+                                Modifier
+                            </a>
+
+                            <form
+                                th:action="@{/formateurs/supprimer/{id}(id=${formateur.id})}"
+                                method="post"
+                                onsubmit="return confirm('Confirmer la suppression de ce formateur ?');">
+                                <button class="btn btn-secondary"
+                                        type="submit">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr th:if="${formateurs.isEmpty()}">
+                    <td colspan="8">
+                        <div class="empty-state">
+                            <div class="empty-icon">Formateurs</div>
+                            <h3 class="empty-title">
+                                Aucun formateur trouvé
+                            </h3>
+                            <p class="empty-description">
+                                Ajoutez un formateur ou modifiez vos critères
+                                de recherche.
+                            </p>
+                            <a class="btn btn-primary"
+                               th:href="@{/formateurs/nouveau}">
+                                Ajouter le premier formateur
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <p>FormaDesk - Gestion des formations</p>
+</footer>
+
+</body>
+</html>

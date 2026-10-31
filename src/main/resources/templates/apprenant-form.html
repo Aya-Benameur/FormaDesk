@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvel apprenant - FormaDesk</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+        <a th:href="@{/sessions}" class="brand">
+            🎓 FormaDesk
+        </a>
+
+        <nav class="nav-links">
+            <a th:href="@{/sessions}" class="nav-link">Sessions</a>
+            <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
+            <a th:href="@{/apprenants}" class="nav-link">Apprenants</a>
+            <a th:href="@{/inscriptions}" class="nav-link">Inscriptions</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        Accueil / Apprenants / Nouvel apprenant
+    </div>
+
+    <section class="page-heading">
+        <h1 class="page-title">Ajouter un apprenant</h1>
+        <p class="page-description">
+            Complétez les informations puis enregistrez.
+        </p>
+    </section>
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <h2 class="panel-title">Informations personnelles</h2>
+            <p class="panel-subtitle">
+                Les champs marqués * sont obligatoires.
+            </p>
+        </div>
+
+        <form th:action="@{/apprenants/enregistrer}"
+              method="post">
+
+            <div class="search-grid">
+
+                <div class="field">
+                    <label>CIN *</label>
+                    <input type="text" name="cin"
+                           class="form-control" required>
+                </div>
+
+                <div class="field">
+                    <label>Prénom *</label>
+                    <input type="text" name="prenom"
+                           class="form-control" required>
+                </div>
+
+                <div class="field">
+                    <label>Nom *</label>
+                    <input type="text" name="nom"
+                           class="form-control" required>
+                </div>
+
+                <div class="field">
+                    <label>Email *</label>
+                    <input type="email" name="email"
+                           class="form-control" required>
+                </div>
+
+                <div class="field">
+                    <label>Date de naissance *</label>
+                    <input type="date" name="dateNaissance"
+                           class="form-control" required>
+                </div>
+
+                <div class="field">
+                    <label>Numéro *</label>
+                    <input type="text" name="numero"
+                           class="form-control" required>
+                </div>
+
+                <div class="field">
+                    <label>Date de première inscription *</label>
+                    <input type="date"
+                           name="datePremiereInscription"
+                           class="form-control"
+                           th:value="${dateDuJour}"
+                           required>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Enregistrer
+                </button>
+
+                <a th:href="@{/apprenants}"
+                   class="btn btn-secondary">
+                    Annuler
+                </a>
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    FormaDesk - Gestion des formations
+</footer>
+
+</body>
+</html>

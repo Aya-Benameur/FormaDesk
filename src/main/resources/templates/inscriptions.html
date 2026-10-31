@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des inscriptions - FormaDesk</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+
+        <a th:href="@{/sessions}" class="brand">
+            <div class="brand-icon">F</div>
+            <div>
+                <div class="brand-name">FormaDesk</div>
+                <div class="brand-subtitle">Gestion des formations</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a th:href="@{/sessions}" class="nav-link">Sessions</a>
+            <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
+            <a th:href="@{/inscriptions}" class="nav-link active">Inscriptions</a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        Accueil / Gestion des inscriptions
+    </div>
+
+    <section class="page-heading">
+        <div>
+            <h1 class="page-title">Gestion des inscriptions</h1>
+            <p class="page-description">
+                Consultez et recherchez les inscriptions aux sessions de formation.
+            </p>
+        </div>
+
+        <div class="heading-mark">📝</div>
+    </section>
+
+    <div th:if="${message}" class="panel">
+        <p th:text="${message}"></p>
+    </div>
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Rechercher une inscription</h2>
+                <p class="panel-subtitle">
+                    Sélectionnez une date pour filtrer les inscriptions.
+                </p>
+            </div>
+        </div>
+
+        <form th:action="@{/inscriptions/rechercher}"
+              method="get">
+
+            <div class="search-grid">
+
+                <div class="field">
+                    <label for="date">Date d'inscription</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        class="form-control"
+                        th:value="${dateRecherchee}">
+                </div>
+
+                <div class="field">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-primary">
+                        🔍 Rechercher
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+        <div class="form-actions">
+            <a th:href="@{/inscriptions}" class="btn btn-light">
+                Réinitialiser
+            </a>
+        </div>
+
+    </section>
+
+    <section class="panel table-panel">
+
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Liste des inscriptions</h2>
+                <p class="panel-subtitle">
+                    Toutes les inscriptions enregistrées dans le système.
+                </p>
+            </div>
+
+            <a th:href="@{/inscriptions/nouveau}"
+               class="btn btn-primary">
+                + Nouvelle inscription
+            </a>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="sessions-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Apprenant</th>
+                        <th>Session de formation</th>
+                        <th>Date d'inscription</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="inscription : ${inscriptions}">
+
+                        <td>
+                            <span class="id-badge"
+                                  th:text="${inscription.id}">
+                            </span>
+                        </td>
+
+                        <td th:text="${inscription.apprenant.prenom
+                            + ' ' + inscription.apprenant.nom}">
+                        </td>
+
+                        <td th:text="${inscription.sessionFormation.description}">
+                        </td>
+
+                        <td th:text="${inscription.dateInscription}">
+                        </td>
+
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(inscriptions)}">
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+
+                                <div class="empty-title">
+                                    Aucune inscription trouvée
+                                </div>
+
+                                <p class="empty-description">
+                                    Aucune inscription ne correspond à votre recherche.
+                                    Vous pouvez créer une nouvelle inscription.
+                                </p>
+
+                                <a th:href="@{/inscriptions/nouveau}"
+                                   class="btn btn-primary">
+                                    + Ajouter une inscription
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <span>FormaDesk - Gestion des formations</span>
+    <span>Application Spring Boot</span>
+</footer>
+
+</body>
+</html>

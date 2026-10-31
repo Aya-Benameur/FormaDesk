@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestion des apprenants - FormaDesk</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+
+        <a th:href="@{/sessions}" class="brand">
+            <div class="brand-icon">F</div>
+
+            <div>
+                <div class="brand-name">FormaDesk</div>
+                <div class="brand-subtitle">Gestion des formations</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a th:href="@{/sessions}" class="nav-link">Sessions</a>
+            <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
+            <a th:href="@{/apprenants}" class="nav-link active">Apprenants</a>
+            <a th:href="@{/inscriptions}" class="nav-link">Inscriptions</a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        Accueil / Gestion des apprenants
+    </div>
+
+    <section class="page-heading">
+
+        <div>
+            <h1 class="page-title">Gestion des apprenants</h1>
+
+            <p class="page-description">
+                Consultez la liste des apprenants inscrits aux formations.
+            </p>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/apprenants/nouveau}" class="btn btn-primary">
+                + Ajouter un apprenant
+            </a>
+        </div>
+
+        <div class="heading-mark">🎓</div>
+
+    </section>
+
+    <section class="panel table-panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h2 class="panel-title">Liste des apprenants</h2>
+
+                <p class="panel-subtitle">
+                    Tous les apprenants enregistrés dans le système.
+                </p>
+            </div>
+
+            <span class="status-badge"
+                  th:text="${#lists.size(apprenants)} + ' apprenant(s)'">
+                0 apprenant(s)
+            </span>
+
+        </div>
+
+        <div th:if="${apprenants == null or #lists.isEmpty(apprenants)}"
+             class="empty-state">
+
+            <div class="empty-icon">🎓</div>
+
+            <div class="empty-title">
+                Aucun apprenant trouvé
+            </div>
+
+            <p class="empty-description">
+                Aucun apprenant n'est actuellement enregistré.
+            </p>
+
+            <a th:href="@{/apprenants/nouveau}" class="btn btn-primary">
+                + Ajouter le premier apprenant
+            </a>
+
+        </div>
+
+        <div th:if="${apprenants != null and !#lists.isEmpty(apprenants)}"
+             class="table-responsive">
+
+            <table class="sessions-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>CIN</th>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Date de naissance</th>
+                        <th>Email</th>
+                        <th>Numéro</th>
+                        <th>Première inscription</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="apprenant : ${apprenants}">
+
+                        <td>
+                            <span class="id-badge"
+                                  th:text="${apprenant.id}">
+                            </span>
+                        </td>
+
+                        <td th:text="${apprenant.cin}"></td>
+
+                        <td th:text="${apprenant.prenom}"></td>
+
+                        <td th:text="${apprenant.nom}"></td>
+
+                        <td th:text="${apprenant.dateNaissance}"></td>
+
+                        <td th:text="${apprenant.email}"></td>
+
+                        <td th:text="${apprenant.numero}"></td>
+
+                        <td th:text="${apprenant.datePremiereInscription}"></td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <span>FormaDesk - Gestion des formations</span>
+    <span>Application Spring Boot</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nouvelle inscription - FormaDesk</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+
+        <a th:href="@{/sessions}" class="brand">
+            <div class="brand-icon">F</div>
+
+            <div>
+                <div class="brand-name">FormaDesk</div>
+                <div class="brand-subtitle">Gestion des formations</div>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a th:href="@{/sessions}" class="nav-link">Sessions</a>
+            <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
+            <a th:href="@{/inscriptions}" class="nav-link active">Inscriptions</a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        Accueil / Inscriptions / Nouvelle inscription
+    </div>
+
+    <section class="page-heading">
+
+        <div>
+            <h1 class="page-title">Nouvelle inscription</h1>
+
+            <p class="page-description">
+                Inscrivez un apprenant à une session de formation.
+            </p>
+        </div>
+
+        <div class="heading-mark">📝</div>
+
+    </section>
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Informations de l'inscription</h2>
+
+                <p class="panel-subtitle">
+                    Remplissez les informations ci-dessous.
+                </p>
+            </div>
+        </div>
+
+        <form th:action="@{/inscriptions/enregistrer}"
+              method="post">
+
+            <div class="field">
+
+                <label for="apprenantId">
+                    Choisir un apprenant
+                </label>
+
+                <select id="apprenantId"
+                        name="apprenantId"
+                        class="form-control"
+                        required>
+
+                    <option value="">
+                        -- Sélectionner un apprenant --
+                    </option>
+
+                    <option th:each="apprenant : ${apprenants}"
+                            th:value="${apprenant.id}"
+                            th:text="${apprenant.prenom + ' ' + apprenant.nom}">
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="field" style="margin-top: 20px;">
+
+                <label for="sessionId">
+                    Choisir une session de formation
+                </label>
+
+                <select id="sessionId"
+                        name="sessionId"
+                        class="form-control"
+                        required>
+
+                    <option value="">
+                        -- Sélectionner une session --
+                    </option>
+
+                    <option th:each="formation : ${sessions}"
+                            th:value="${formation.id}"
+                            th:text="${formation.description}">
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="field" style="margin-top: 20px;">
+
+                <label for="dateInscription">
+                    Date d'inscription
+                </label>
+
+                <input type="date"
+                       id="dateInscription"
+                       name="dateInscription"
+                       class="form-control"
+                       th:value="${dateDuJour}"
+                       required>
+
+            </div>
+
+            <div class="form-actions">
+
+                <button type="submit" class="btn btn-primary">
+                    ✓ Enregistrer l'inscription
+                </button>
+
+                <a th:href="@{/inscriptions}" class="btn btn-light">
+                    Annuler
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <span>FormaDesk - Gestion des formations</span>
+    <span>Application Spring Boot</span>
+</footer>
+
+</body>
+</html>

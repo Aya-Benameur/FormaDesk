@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire formateur | FormaDesk</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+        <a class="brand" th:href="@{/formateurs}">
+            <span class="heading-mark">F</span>
+            FormaDesk
+        </a>
+        <nav class="nav-links">
+            <a class="nav-link" th:href="@{/sessions}">Sessions</a>
+            <a class="nav-link" th:href="@{/formateurs}">Formateurs</a>
+            <a class="nav-link" th:href="@{/apprenants}">Apprenants</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="page-heading">
+        <div>
+            <h1 class="page-title" th:text="${titreFormulaire}">
+                Ajouter un formateur
+            </h1>
+            <p class="page-description">
+                Complétez les informations puis enregistrez.
+            </p>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">Informations personnelles</h2>
+                <p class="panel-subtitle">
+                    Les champs marqués * sont obligatoires.
+                </p>
+            </div>
+        </div>
+
+        <form th:action="@{/formateurs/enregistrer}"
+              th:object="${formateur}" method="post">
+
+            <input type="hidden" th:field="*{id}">
+
+            <!-- TEST TEMPORAIRE -->
+            <p>TEST ID : <span th:text="*{id}">ID</span></p>
+            <p>TEST NOM : <span th:text="*{nom}">Nom</span></p>
+            <p>TEST FONCTION : <span th:text="*{fonction}">Fonction</span></p>
+
+            <div class="search-grid">
+                <div class="field">
+                    <label for="cin">CIN *</label>
+                    <input class="form-control" id="cin"
+                           type="text" th:field="*{cin}"
+                           required maxlength="20">
+                </div>
+
+                <div class="field">
+                    <label for="prenom">Prénom *</label>
+                    <input class="form-control" id="prenom"
+                           type="text" th:field="*{prenom}"
+                           required maxlength="100">
+                </div>
+
+                <div class="field">
+                    <label for="nom">Nom *</label>
+                    <input class="form-control" id="nom"
+                           type="text" th:field="*{nom}"
+                           required maxlength="100">
+                </div>
+
+                <div class="field">
+                    <label for="email">Email *</label>
+                    <input class="form-control" id="email"
+                           type="email" th:field="*{email}"
+                           required maxlength="150">
+                </div>
+
+                <div class="field">
+                    <label for="dateNaissance">Date de naissance *</label>
+                    <input class="form-control" id="dateNaissance"
+                           type="date" th:field="*{dateNaissance}"
+                           required>
+                </div>
+            </div>
+
+            <div class="panel-header">
+                <div>
+                    <h2 class="panel-title">Informations professionnelles</h2>
+                </div>
+            </div>
+
+            <div class="search-grid">
+                <div class="field">
+                    <label for="fonction">Fonction *</label>
+                    <input class="form-control" id="fonction"
+                           type="text" th:field="*{fonction}"
+                           required maxlength="100"
+                           placeholder="Ex. : Développeur Java">
+                </div>
+
+                <div class="field">
+                    <label for="grade">Grade *</label>
+                    <input class="form-control" id="grade"
+                           type="text" th:field="*{grade}"
+                           required maxlength="100"
+                           placeholder="Ex. : Principal">
+                </div>
+
+                <div class="field">
+                    <label for="datePremiereFormation">
+                        Date de première formation *
+                    </label>
+                    <input class="form-control"
+                           id="datePremiereFormation"
+                           type="date"
+                           th:field="*{datePremiereFormation}"
+                           required>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                    Enregistrer
+                </button>
+                <a class="btn btn-secondary"
+                   th:href="@{/formateurs}">
+                    Annuler
+                </a>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>FormaDesk - Gestion des formations</p>
+</footer>
+
+</body>
+</html>
