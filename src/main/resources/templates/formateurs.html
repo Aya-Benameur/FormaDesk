@@ -1,26 +1,40 @@
 
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formateurs | FormaDesk</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 
 <header class="topbar">
     <div class="nav-container">
+
         <a class="brand" th:href="@{/formateurs}">
             <span class="heading-mark">F</span>
             FormaDesk
         </a>
+
         <nav class="nav-links">
             <a class="nav-link" th:href="@{/}">Tableau de bord</a>
             <a class="nav-link" th:href="@{/sessions}">Sessions</a>
-            <a class="nav-link" th:href="@{/formateurs}">Formateurs</a>
+            <a class="nav-link active" th:href="@{/formateurs}">Formateurs</a>
             <a class="nav-link" th:href="@{/apprenants}">Apprenants</a>
         </nav>
+
+        <!-- Déconnexion -->
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-secondary">
+                ↪ Déconnexion
+            </button>
+        </form>
+
     </div>
 </header>
 
@@ -44,15 +58,19 @@
         <p th:text="${erreur}"></p>
     </section>
 
-    <!-- Action principale -->
-    <section class="form-actions">
+    <!-- Ajouter : ADMIN uniquement -->
+    <section class="form-actions"
+             sec:authorize="hasRole('ADMIN')">
+
         <a class="btn btn-primary" th:href="@{/formateurs/nouveau}">
             + Ajouter un formateur
         </a>
+
     </section>
 
     <!-- Statistiques -->
     <section class="stats-grid">
+
         <article class="stat-card">
             <div class="stat-icon">Formateurs</div>
             <p class="stat-label">Résultats affichés</p>
@@ -70,10 +88,12 @@
             <p class="stat-label">Espace</p>
             <p class="stat-value">Formateurs</p>
         </article>
+
     </section>
 
-    <!-- Recherches -->
+    <!-- Recherches : USER et ADMIN -->
     <section class="panel">
+
         <div class="panel-header">
             <div>
                 <h2 class="panel-title">Rechercher un formateur</h2>
@@ -84,9 +104,12 @@
         </div>
 
         <div class="search-grid">
+
             <form th:action="@{/formateurs/rechercher}" method="get">
+
                 <div class="field">
                     <label for="fonction">Fonction</label>
+
                     <input class="form-control"
                            id="fonction"
                            type="text"
@@ -94,20 +117,25 @@
                            placeholder="Ex. : Développeur"
                            th:value="${fonctionRecherchee}">
                 </div>
+
                 <div class="form-actions">
                     <button class="btn btn-primary" type="submit">
                         Rechercher
                     </button>
+
                     <a class="btn btn-secondary"
                        th:href="@{/formateurs}">
                         Réinitialiser
                     </a>
                 </div>
+
             </form>
 
             <form th:action="@{/formateurs/par-formation}" method="get">
+
                 <div class="field">
                     <label for="formation">Formation</label>
+
                     <input class="form-control"
                            id="formation"
                            type="text"
@@ -115,32 +143,40 @@
                            placeholder="Ex. : Java"
                            th:value="${formationRecherchee}">
                 </div>
+
                 <div class="form-actions">
                     <button class="btn btn-primary" type="submit">
                         Rechercher
                     </button>
+
                     <a class="btn btn-secondary"
                        th:href="@{/formateurs}">
                         Réinitialiser
                     </a>
                 </div>
+
             </form>
+
         </div>
+
     </section>
 
-    <!-- Liste -->
+    <!-- Liste des formateurs -->
     <section class="table-panel">
+
         <div class="panel-header">
             <div>
                 <h2 class="panel-title">Liste des formateurs</h2>
                 <p class="panel-subtitle">
-                    Gérez les informations enregistrées.
+                    Consultez les informations enregistrées.
                 </p>
             </div>
         </div>
 
         <div class="table-responsive">
+
             <table class="sessions-table">
+
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -150,12 +186,18 @@
                     <th>Fonction</th>
                     <th>Grade</th>
                     <th>Première formation</th>
-                    <th>Actions</th>
+
+                    <!-- Actions visibles uniquement pour ADMIN -->
+                    <th sec:authorize="hasRole('ADMIN')">
+                        Actions
+                    </th>
                 </tr>
                 </thead>
 
                 <tbody>
+
                 <tr th:each="formateur : ${formateurs}">
+
                     <td>
                         <span class="id-badge"
                               th:text="${formateur.id}">1</span>
@@ -169,7 +211,9 @@
                     </td>
 
                     <td th:text="${formateur.cin}">CIN</td>
+
                     <td th:text="${formateur.email}">Email</td>
+
                     <td th:text="${formateur.fonction}">Fonction</td>
 
                     <td>
@@ -181,8 +225,11 @@
                         Date
                     </td>
 
-                    <td>
+                    <!-- Modifier et supprimer : ADMIN uniquement -->
+                    <td sec:authorize="hasRole('ADMIN')">
+
                         <div class="form-actions">
+
                             <a class="btn btn-secondary"
                                th:href="@{/formateurs/modifier/{id}(id=${formateur.id})}">
                                 Modifier
@@ -192,36 +239,55 @@
                                 th:action="@{/formateurs/supprimer/{id}(id=${formateur.id})}"
                                 method="post"
                                 onsubmit="return confirm('Confirmer la suppression de ce formateur ?');">
+
                                 <button class="btn btn-secondary"
                                         type="submit">
                                     Supprimer
                                 </button>
+
                             </form>
+
                         </div>
+
                     </td>
+
                 </tr>
 
                 <tr th:if="${formateurs.isEmpty()}">
+
                     <td colspan="8">
+
                         <div class="empty-state">
+
                             <div class="empty-icon">Formateurs</div>
+
                             <h3 class="empty-title">
                                 Aucun formateur trouvé
                             </h3>
+
                             <p class="empty-description">
-                                Ajoutez un formateur ou modifiez vos critères
-                                de recherche.
+                                Aucun formateur ne correspond à cette recherche.
                             </p>
+
+                            <!-- Ajouter le premier : ADMIN uniquement -->
                             <a class="btn btn-primary"
+                               sec:authorize="hasRole('ADMIN')"
                                th:href="@{/formateurs/nouveau}">
                                 Ajouter le premier formateur
                             </a>
+
                         </div>
+
                     </td>
+
                 </tr>
+
                 </tbody>
+
             </table>
+
         </div>
+
     </section>
 
 </main>

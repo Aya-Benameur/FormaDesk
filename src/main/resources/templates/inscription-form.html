@@ -1,6 +1,8 @@
 
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -28,8 +30,15 @@
         <nav class="nav-links">
             <a th:href="@{/sessions}" class="nav-link">Sessions</a>
             <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
+            <a th:href="@{/apprenants}" class="nav-link">Apprenants</a>
             <a th:href="@{/inscriptions}" class="nav-link active">Inscriptions</a>
         </nav>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-secondary">
+                ↪ Déconnexion
+            </button>
+        </form>
 
     </div>
 </header>
@@ -50,7 +59,7 @@
             </p>
         </div>
 
-        <div class="heading-mark">📝</div>
+        <div class="heading-mark">📚</div>
 
     </section>
 
@@ -135,7 +144,7 @@
             <div class="form-actions">
 
                 <button type="submit" class="btn btn-primary">
-                    ✓ Enregistrer l'inscription
+                    ✔ Enregistrer l'inscription
                 </button>
 
                 <a th:href="@{/inscriptions}" class="btn btn-light">

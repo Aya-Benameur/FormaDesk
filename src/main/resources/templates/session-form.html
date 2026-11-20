@@ -1,13 +1,13 @@
 
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Nouvelle session - FormaDesk</title>
-
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
@@ -25,6 +25,12 @@
             <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
             <a th:href="@{/apprenants}" class="nav-link">Apprenants</a>
             <a th:href="@{/inscriptions}" class="nav-link">Inscriptions</a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-secondary">
+                    Déconnexion
+                </button>
+            </form>
         </nav>
 
     </div>
@@ -38,17 +44,15 @@
 
     <section class="page-heading">
         <h1 class="page-title">Ajouter une session</h1>
-
         <p class="page-description">
             Complétez les informations pour créer une nouvelle formation.
         </p>
     </section>
 
-    <section class="panel">
+    <section class="panel" sec:authorize="hasRole('ADMIN')">
 
         <div class="panel-header">
             <h2 class="panel-title">Informations de la session</h2>
-
             <p class="panel-subtitle">
                 Les champs marqués * sont obligatoires.
             </p>
@@ -60,7 +64,6 @@
 
                 <div class="field">
                     <label>Description *</label>
-
                     <input type="text"
                            name="description"
                            class="form-control"
@@ -70,7 +73,6 @@
 
                 <div class="field">
                     <label>Date de début *</label>
-
                     <input type="date"
                            name="dateDebut"
                            class="form-control"
@@ -80,7 +82,6 @@
 
                 <div class="field">
                     <label>Date de fin *</label>
-
                     <input type="date"
                            name="dateFin"
                            class="form-control"
@@ -94,9 +95,7 @@
                             class="form-control"
                             required>
 
-                        <option value="">
-                            Choisir un formateur
-                        </option>
+                        <option value="">Choisir un formateur</option>
 
                         <option th:each="formateur : ${formateurs}"
                                 th:value="${formateur.id}"

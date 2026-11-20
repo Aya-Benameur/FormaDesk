@@ -1,6 +1,9 @@
 
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,8 +27,15 @@
         <nav class="nav-links">
             <a th:href="@{/sessions}" class="nav-link">Sessions</a>
             <a th:href="@{/formateurs}" class="nav-link">Formateurs</a>
+            <a th:href="@{/apprenants}" class="nav-link">Apprenants</a>
             <a th:href="@{/inscriptions}" class="nav-link active">Inscriptions</a>
         </nav>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-secondary">
+                ↪ Déconnexion
+            </button>
+        </form>
 
     </div>
 </header>
@@ -44,7 +54,7 @@
             </p>
         </div>
 
-        <div class="heading-mark">📝</div>
+        <div class="heading-mark">📚</div>
     </section>
 
     <div th:if="${message}" class="panel">
@@ -62,8 +72,7 @@
             </div>
         </div>
 
-        <form th:action="@{/inscriptions/rechercher}"
-              method="get">
+        <form th:action="@{/inscriptions/rechercher}" method="get">
 
             <div class="search-grid">
 
@@ -107,7 +116,8 @@
             </div>
 
             <a th:href="@{/inscriptions/nouveau}"
-               class="btn btn-primary">
+               class="btn btn-primary"
+               sec:authorize="hasRole('ADMIN')">
                 + Nouvelle inscription
             </a>
         </div>
@@ -150,7 +160,7 @@
                     <tr th:if="${#lists.isEmpty(inscriptions)}">
                         <td colspan="4">
                             <div class="empty-state">
-                                <div class="empty-icon">📭</div>
+                                <div class="empty-icon">📋</div>
 
                                 <div class="empty-title">
                                     Aucune inscription trouvée
@@ -162,7 +172,8 @@
                                 </p>
 
                                 <a th:href="@{/inscriptions/nouveau}"
-                                   class="btn btn-primary">
+                                   class="btn btn-primary"
+                                   sec:authorize="hasRole('ADMIN')">
                                     + Ajouter une inscription
                                 </a>
                             </div>

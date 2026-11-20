@@ -4,6 +4,7 @@ package tn.iset.gestion_formation.controller;
 import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +32,10 @@ public class SessionFormationController {
     }
 
     // Afficher toutes les sessions
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
     public String listerToutes(Model model) {
+
         model.addAttribute(
                 "sessions",
                 sessionFormationService.listerToutesLesSessions()
@@ -42,6 +45,7 @@ public class SessionFormationController {
     }
 
     // Afficher le formulaire de création
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/nouveau")
     public String afficherFormulaire(Model model) {
 
@@ -56,6 +60,7 @@ public class SessionFormationController {
     }
 
     // Enregistrer une nouvelle session
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/enregistrer")
     public String enregistrer(
             @RequestParam String description,
@@ -84,6 +89,7 @@ public class SessionFormationController {
     }
 
     // Rechercher les sessions par date de début
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/rechercher/date")
     public String rechercherParDate(
             @RequestParam
@@ -102,6 +108,7 @@ public class SessionFormationController {
     }
 
     // Rechercher les sessions par description
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/rechercher/description")
     public String rechercherParDescription(
             @RequestParam String description,
@@ -118,6 +125,7 @@ public class SessionFormationController {
     }
 
     // Afficher le nombre d'apprenants d'une session
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/nombre-apprenants")
     public String nombreApprenants(
             @RequestParam Long sessionId,
@@ -134,6 +142,7 @@ public class SessionFormationController {
     }
 
     // Rechercher les sessions suivies par un apprenant
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/par-apprenant")
     public String rechercherParApprenant(
             @RequestParam Long apprenantId,

@@ -1,6 +1,8 @@
 
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -32,6 +34,13 @@
             <a th:href="@{/inscriptions}" class="nav-link">Inscriptions</a>
         </nav>
 
+        <!-- Déconnexion pour USER et ADMIN -->
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-secondary">
+                ↪ Déconnexion
+            </button>
+        </form>
+
     </div>
 </header>
 
@@ -51,10 +60,14 @@
             </p>
         </div>
 
-        <div class="form-actions">
+        <!-- Ajouter : ADMIN uniquement -->
+        <div class="form-actions"
+             sec:authorize="hasRole('ADMIN')">
+
             <a th:href="@{/apprenants/nouveau}" class="btn btn-primary">
                 + Ajouter un apprenant
             </a>
+
         </div>
 
         <div class="heading-mark">🎓</div>
@@ -80,6 +93,7 @@
 
         </div>
 
+        <!-- Aucun apprenant -->
         <div th:if="${apprenants == null or #lists.isEmpty(apprenants)}"
              class="empty-state">
 
@@ -93,12 +107,16 @@
                 Aucun apprenant n'est actuellement enregistré.
             </p>
 
-            <a th:href="@{/apprenants/nouveau}" class="btn btn-primary">
+            <!-- Ajouter le premier : ADMIN uniquement -->
+            <a th:href="@{/apprenants/nouveau}"
+               class="btn btn-primary"
+               sec:authorize="hasRole('ADMIN')">
                 + Ajouter le premier apprenant
             </a>
 
         </div>
 
+        <!-- Liste visible pour USER et ADMIN -->
         <div th:if="${apprenants != null and !#lists.isEmpty(apprenants)}"
              class="table-responsive">
 

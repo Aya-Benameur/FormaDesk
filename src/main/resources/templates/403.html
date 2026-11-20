@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Accès refusé | FormaDesk</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .error-container {
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .error-card {
+            max-width: 550px;
+            padding: 45px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .error-code {
+            font-size: 75px;
+            font-weight: bold;
+            color: #7554d9;
+            margin: 0;
+        }
+
+        .error-icon {
+            font-size: 65px;
+            margin-bottom: 15px;
+        }
+
+        .error-title {
+            font-size: 27px;
+            margin: 15px 0;
+        }
+
+        .error-message {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="nav-container">
+        <a class="brand" th:href="@{/sessions}">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <div class="brand-name">FormaDesk</div>
+                <div class="brand-subtitle">Gestion de formation</div>
+            </div>
+        </a>
+    </div>
+</header>
+
+<main class="container error-container">
+
+    <section class="error-card">
+
+        <div class="error-icon">🔒</div>
+
+        <p class="error-code">403</p>
+
+        <h1 class="error-title">Accès refusé</h1>
+
+        <p class="error-message">
+            Désolé ! Vous n'avez pas les autorisations nécessaires
+            pour accéder à cette page.
+            <br>
+            Contactez un administrateur si vous pensez qu'il s'agit
+            d'une erreur.
+        </p>
+
+        <a class="btn btn-primary" th:href="@{/sessions}">
+            ↩ Retour aux sessions
+        </a>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <span>© 2026 FormaDesk — Gestion de formation</span>
+    <span>Application Spring MVC &amp; Thymeleaf</span>
+</footer>
+
+</body>
+</html>
